@@ -9,6 +9,6 @@ namespace AnagramConsole
 	{
 		void CheckAnagram(string w1, string w2);
 
-		void GetKnownWord(IConfiguration config, string word);
+		void GetKnownWord(string word);
 	}
 }
