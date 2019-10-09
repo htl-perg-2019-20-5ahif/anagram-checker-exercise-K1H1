@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AnagramLibrary
 {
 	interface IChecker
 	{
 
-		void sortLetters(String w1, String w2);
-		bool IsAnagram();
+		bool IsAnagram(string w1, string w2);
+
+		List<String> GetKnownAnagrams(string dicttext, string word);
 
 	}
 }

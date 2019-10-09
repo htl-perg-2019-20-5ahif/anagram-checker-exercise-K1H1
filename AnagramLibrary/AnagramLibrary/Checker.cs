@@ -1,45 +1,64 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 
 namespace AnagramLibrary
+
+
 {
 	public class Checker : IChecker
 	{
-		String w1;
-		String w2;
-		char[] c1;
-		char[] c2;
-
-		public Checker(String w1, String w2)
+		
+		public Checker()
 		{
-			this.w1 = w1;
-			this.w2 = w2;
+
 		}
 
-		public bool IsAnagram()
+
+		/// <summary>
+		/// Checks wether it is possible that the two words are an anagram or not
+		/// </summary>
+		/// <returns>Returns if the words are anagrams or not</returns>
+		public bool IsAnagram(string w1, string w2)
 		{
-			this.sortLetters(w1, w2);
 			
-			// check if  letters are the same and if an anagram is possible
-			for (int i = 0; i < c1.Length; i++)
+			string ww1 = String.Concat(w1.OrderBy(c => c));
+			string ww2 = String.Concat(w2.OrderBy(c => c));
+
+			if (ww1 == ww2)
 			{
-				if (this.c1[i] != this.c2[i])
-				{
-					return false;			
-				}
 				return true;
 			}
-			
-			return true;
+			else
+			{
+				return false;
+			}	
 		}
 
-		public void sortLetters(String w1, String w2)
+
+		/// <summary>
+		/// Checks if the given word is in the anagram dictionary
+		/// </summary>
+		/// <param name="dictname"></param>
+		/// <param name="word"></param>
+		public List<String> GetKnownAnagrams(string dicttext, string word)
 		{
-			c1 = this.w1.ToCharArray();
-			c2 = this.w2.ToCharArray();
+			List<string> knownWords = new List<string>();
 
-			Array.Sort(c1);
-			Array.Sort(c2);
+			var dictWords = dicttext.Replace("\r", "").Split('\n');
+			for (int i = 0; i < dictWords.Length; i++)
+			{
+				if (IsAnagram(dictWords[i], word) && dictWords[i] != word )
+				{
+					knownWords.Add(dictWords[i]);
+				}
+			}
+			return knownWords;
 		}
-
 	}
 }
